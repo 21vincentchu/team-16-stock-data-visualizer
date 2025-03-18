@@ -54,7 +54,7 @@ git push -u origin [branch name] #push
 ```
 git checkout main #switching to the main branch
 git pull origin main #making sure main is up to date
-git merge your-branch-name #merge your branch into main
+git merge your-branch-name -m "message here" #merge your branch into main
 git push origin main #push the merged changes to GitHub
 
 ```
