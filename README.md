@@ -5,7 +5,8 @@
 1. Steps to clone the repo:
    
     1. Make a working folder on your local machine
-    2. pen your working folder in IDE
+    2. open your working folder in IDE
+       
    ```
     git clone https://github.com/21vincentchu/team-16-stock-data-visualizer.git
     cd team-16-stock-data-visualizer
