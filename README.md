@@ -1,6 +1,39 @@
 # Team 16 Stock Data Visualizer
 
-# Project setup
+## git commands to reference back to
+### tracking changes 
+```
+git clone [url] #creates copy of a remoate repo on your machine
+git status #shows current branch and directory you're in
+git add . #adds all new and modified files
+git commit -m "insert message here" #records the changes in the repo
+git push origin [branch] $uploads your commits to the remote repo. check using git status. EXAMPLE: git push origin main
+git pull origin [branch] #downloads any changes from the remote repo. check using git status.EXAMPLE: git pull origin main
+
+```
+
+### make git branch and push to github after you have made some modfication. Do not make a new branch everytime
+```
+git branch #list the current branches
+git checkout -b your-branch-name #create a new branch and switch to it
+
+### pushing your branch to github and updating your branch
+git add . #stage your changes
+git commit -m "xyz's branch" #commit
+git push -u origin [branch name] #push
+
+```
+### merging your branch into the main
+```
+git checkout main #switching to the main branch
+git pull origin main #making sure main is up to date
+git merge your-branch-name #merge your branch into main
+git push origin main #push the merged changes to GitHub
+
+```
+
+
+## Project setup
 
 1. Steps to clone the repo:
    
