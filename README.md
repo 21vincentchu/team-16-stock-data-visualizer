@@ -10,11 +10,17 @@
     4. cd team-16-stock-data-visualizer``` 
 
 3. Create a virtual environment in command line so make sure we are running all the same packages, and same python with the same libraries. Type these commands
-    ```python3 -m venv venv```
+   ```
+   python3 -m venv venv
+   ```
 
-4. Activate the virtual environment:
-     ```source venv/bin/activate```
+6. Activate the virtual environment:
+     ```
+   source venv/bin/activate
+     ```
 
-5. Install dependencies
-    Make sure you are in the root file, cd team-16-stock-data-visualizer
-    ```pip install -r requirements.txt```
+8. Install dependencies
+    Make sure you are in the root file, cd team-16-stock-data-visualizer 
+    ```
+   pip install -r requirements.txt
+    ```
