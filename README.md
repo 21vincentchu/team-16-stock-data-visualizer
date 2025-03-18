@@ -43,7 +43,7 @@ git pull origin [branch] #downloads any changes from the remote repo. check usin
 ### make git branch and push to github after you have made some modfication. Do not make a new branch everytime
 ```
 git branch #list the current branches
-git checkout -b your-branch-name #create a new branch and switch to it
+git checkout -b your-branch-name #create a new branch and switch to it. make sure its one word, use hyphens
 
 ### pushing your branch to github and updating your branch
 git add . #stage your changes
