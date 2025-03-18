@@ -28,7 +28,7 @@
     ```
 
     
-## git commands references. Feel free to work on the main 
+## git commands references
 ### Tracking changes 
 ```
 git clone [url] #creates copy of a remoate repo on your machine
