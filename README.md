@@ -19,7 +19,7 @@
    
    # Windows virtual envioronment setup
    python -m venv ml_env
-   .\ml_env\Scripts\activate
+   .\m1_env\Scripts\activate
    ```
 
 8. Install dependencies
