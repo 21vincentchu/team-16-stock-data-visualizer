@@ -15,20 +15,42 @@ def main():
     #ask the user for the end date in YYYY-MM-DD format
         #the end date should not be before the begin datae
         
-        
+    symbol=get_symbol()
     dates_tuple = get_date_range()
     start_date = dates_tuple[0]
     end_date = dates_tuple[1]
     
     
-    APIdata = get_api_data_with_range("IBM",start_date,end_date)
+    APIdata = get_api_data_with_range(symbol,start_date,end_date)
     print(APIdata)
 
 
 #*************Main Menu Methods*************# 
 #To do: Claire
 def get_symbol():
-    return 1
+    while True:
+        print("\nStock Data Visualizer\n----------------")
+
+        #User enters a symbol
+        symbol=input("Enter the stock symbol you are looking for:").strip().upper()
+        try:
+            #Validate it is a valid symbol
+            api_key='W333ESXXCYIWJJS8'
+            
+            url=f'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&outputsize=full&apikey={api_key}'
+            response=requests.get(url)
+            data=response.json()
+
+            if "Global Quote" in data and "01. symbol" in data["Global Quote"]:
+                print (f'symbol: {symbol}')
+                return symbol
+            else:
+                print (f'Error: {symbol} not recognized. Try again.')
+        except Exception as e:
+            print(f"Could not validate symbol. {str(e)}")
+
+
+
 
 #To do: Vinny
 def get_chart_type():
@@ -36,7 +58,25 @@ def get_chart_type():
 
 #to do: Claire
 def get_time_series_function():
-    return 1
+    #Display options
+    while True:
+        print('\n Select the Time Series of the chart you want to Generate\n---------------------------------------------------- ')
+        print('1. Intraday')
+        print('2. Daily')
+        print('3. Weekly')
+        print('1. Monthly')
+    #User inputs choice
+        choice= input('Enter time series option (1,2,3,4):')
+
+    #validate choice
+        validated_choice= validate_int_input(choice)
+
+        if validated_choice and 1 <= validated_choice <= 4:
+            return validated_choice
+        else:
+            print("Error: Enter valid option.")
+
+
 
 
 # gathers date range as a string from the user and converts them to datetime objects to be able to date comparisons
