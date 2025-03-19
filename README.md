@@ -4,7 +4,7 @@
 1. Steps to clone the repo:
    
     1. Make a working folder on your local machine
-    2. open your working folder in IDE
+    2. open your working folder in IDE then CD into the git root folder
        
    ```
     git clone https://github.com/21vincentchu/team-16-stock-data-visualizer.git
@@ -13,19 +13,21 @@
 
 3. Create a virtual environment in command line so make sure we are running all the same packages, and same python with the same libraries. Type these commands
    ```
-   python3 -m venv venv
+    # macOS virtual envioronment setup
+   python3 -m venv {venv_name}
+   source {venv_name}/bin/activate
+   
+   # Windows virtual envioronment setup
+   python -m venv ml_env
+   .\ml_env\Scripts\activate
    ```
-
-6. Activate the virtual environment:
-     ```
-   source venv/bin/activate
-     ```
 
 8. Install dependencies
     Make sure you are in the root file, cd team-16-stock-data-visualizer 
     ```
-   pip install -r requirements.txt
+    pip install -r requirements.txt
     ```
+
 
     
 ## git commands references
