@@ -4,34 +4,42 @@ import pygal
 from datetime import datetime
 
 def main():
-    # SHOULD THESE BE SEPARATE FUNCTIONS?
-    #ask the user to enter the stock suymbol for the company they want data for
-    #ask the user for the chart type they would ike
-    #ask the user for the time series function they want the API to use
+    # SHOULD THESE BE SEPARATE FUNCTIONS? - probably yes
+    #ask the user to enter the stock symbol for the company they want data for. Should we check with dictionaries to see if that symbol exists
+    
+    #ask the user for the chart type they would like. (1 or 2), bar or line
+    
+    #ask the user for the time series function they want the API to use (1,2,3,4)
     
     #ask the user for the beginning date in YYY-MM-DD format
     #ask the user for the end date in YYYY-MM-DD format
         #the end date should not be before the begin datae
+        
+        
     dates_tuple = get_date_range()
     start_date = dates_tuple[0]
     end_date = dates_tuple[1]
-
-
-    #API key = W333ESXXCYIWJJS8
-    #generate a graph and open in the user's default browser
-    #function API parameter and then Symbol
-    function="TIME_SERIES_DAILY"
-    symbol="IBM"
-    url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey='
-
     
+    
+    APIdata = get_api_data_with_range("IBM",start_date,end_date)
+    print(APIdata)
 
 
-######********************
-###### Main Menu Methods
+#*************Main Menu Methods*************# 
+#To do: Claire
+def get_symbol():
+    return 1
+
+#To do: Vinny
+def get_chart_type():
+    return 1
+
+#to do: Claire
+def get_time_series_function():
+    return 1
 
 
-# gathers date range and converts them to datetime objects
+# gathers date range as a string from the user and converts them to datetime objects to be able to date comparisons
 # IN: None
 # OUT: Converted Dates (Tuple -> 2 DateTime objects)
 def get_date_range():
@@ -39,9 +47,11 @@ def get_date_range():
         # collect inputs
         start_date_str = input("Enter the start Date (YYYY-MM-DD): ")
         end_date_str = input("Enter the end Date (YYYY-MM-DD): ")
+        
         # attempt to convert to date type
         start_date = validate_date_input(start_date_str)
         end_date = validate_date_input(end_date_str)
+        
         # check conversion worked
         if(start_date and end_date):
             # validate begin date is before end date
@@ -56,23 +66,45 @@ def get_date_range():
             continue
 
 
-
-
-
-
-######********************
-###### Utility Methods
-
 # method to get results from the alphavantage stock api,
-# given a url with the applied settings passed.
-# IN: url excluding api key (string)
-# OUT: result (json)
-def get_api_data(url):
+# given symbol, start date, and end date
+# IN: symbol,functioNum, start date, end state
+# OUT: result with json with the specified start and end dates
+def get_api_data_with_range(symbol,functionNum,start_date,end_date):
     api_key = 'W333ESXXCYIWJJS8'
-    final_url= f"{url}{api_key}"
-    response = requests.get(final_url)
-    result = response.json()
-    return result
+
+    #dictionary to store the functions needed for options for the chart
+    function = {
+        1: "TIME_SERIES_INTRADAY",
+        2: "TIME_SERIES_DAILY",
+        3: "TIME_SERIES_WEEKLY",
+        4: "TIME_SERIES_MONTHLY"
+    }
+    
+    api_function = functionNum[function]#sets the number from the parameter into the string function needed for the API call
+    symbol = symbol
+    url = f'https://www.alphavantage.co/query?function={api_function}&symbol={symbol}&outputsize=full&apikey={api_key}'
+    response = requests.get(url)
+    data = response.json()
+    
+    #empty dictionary to store filtered results
+    filtered_data = {}
+    
+    for date_str, values in data['Time Series (Daily)'].items():
+        
+        #Gets the date of the current json line. turns into a datetime object to compare
+        current_date = datetime.strptime(date_str, "%Y-%m-%d")
+        
+        # If date is in our range, keep it
+        if start_date <= current_date <= end_date:
+            filtered_data.update({current_date:values})
+    
+    return filtered_data
+
+def make_chart():
+    return 1
+
+ #*************Utility methods*************#  
 
 # function to validate a menu input
 # IN: text input from user (string)
