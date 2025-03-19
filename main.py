@@ -81,7 +81,7 @@ def get_api_data_with_range(symbol,functionNum,start_date,end_date):
         4: "TIME_SERIES_MONTHLY"
     }
     
-    api_function = functionNum[function]#sets the number from the parameter into the string function needed for the API call
+    api_function = function[functionNum]#sets the number from the parameter into the string function needed for the API call
     symbol = symbol
     url = f'https://www.alphavantage.co/query?function={api_function}&symbol={symbol}&outputsize=full&apikey={api_key}'
     response = requests.get(url)
