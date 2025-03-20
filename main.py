@@ -69,12 +69,13 @@ def get_time_series_function():
         choice= input('Enter time series option (1,2,3,4):')
 
     #validate choice
-        validated_choice= validate_int_input(choice)
+        validated_choice= validate_int_input(choice, (1,4))
 
-        if validated_choice and 1 <= validated_choice <= 4:
+        if(validated_choice):
             return validated_choice
         else:
-            print("Error: Enter valid option.")
+            print("Invalid entry")
+        
 
 
 
@@ -150,10 +151,13 @@ def make_chart():
 # IN: text input from user (string)
 # OUT: if input valid, returns numerical result (int)
 #      if invalid, returns Null result, which can be evaluated in an if/else statement
-def validate_int_input(str_input):
+def validate_int_input(str_input, range):
     try:
         result = int(str_input)
-        return result
+        if(result>=range[0] && result<=range[1]):
+            return result
+        else:
+            return None
     except:
         return None
 
