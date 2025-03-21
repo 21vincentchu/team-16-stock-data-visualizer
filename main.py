@@ -50,8 +50,6 @@ def get_symbol():
             print(f"Could not validate symbol. {str(e)}")
 
 
-
-
 #To do: Vinny
 def get_chart_type():
     return 1
@@ -76,10 +74,6 @@ def get_time_series_function():
         else:
             print("Invalid entry")
         
-
-
-
-
 # gathers date range as a string from the user and converts them to datetime objects to be able to date comparisons
 # IN: None
 # OUT: Converted Dates (Tuple -> 2 DateTime objects)
@@ -154,7 +148,7 @@ def make_chart():
 def validate_int_input(str_input, range):
     try:
         result = int(str_input)
-        if(result>=range[0] && result<=range[1]):
+        if(result>=range[0] and result<=range[1]):
             return result
         else:
             return None
