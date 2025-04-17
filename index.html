@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Data Visualization{% endblock %}
+
+{% block content %}
+  <h1>Generate Stock Chart</h1>
+<!--Asks user for stock symbol-->
+  <form action="{{ url_for('generate_chart') }}" method="POST">
+    <label for="symbol">Choose Symbol:</label><br>
+    <select id="symbol" name="symbol" required>
+        <option value="">Select a symbol</option>
+        {% for symbol in symbol_list %}
+            <option value="{{ symbol }}">{{ symbol }}</option>
+        {% endfor %}
+    </select><br><br>
+
+<!--Asks user for chart type-->
+<label for="chartType">Choose Chart Type:</label><br>
+<select id="chartType" name="chartType" required>
+    <option value="1">Bar</option>
+    <option value="2">Line</option>
+</select><br><br>
+
+<!--Asks user for time series-->
+<label for="timeSeries">Choose Time Series:</label><br>
+<select id="timeSeries" name="timeSeries" required>
+    <option value="1">Intraday</option>
+    <option value="2">Daily</option>
+    <option value="3">Weekly</option>
+    <option value="4">Monthly</option>
+</select><br><br>
+
+<!--Asks user for start and end date-->
+<label for="startDate">Start Date:</label><br>
+<input type="date" id="startDate" name="startDate" required><br><br>
+
+<label for="endDate">End Date:</label><br>
+<input type="date" id="endDate" name="endDate" required><br><br>
+
+<!--submit button-->
+<input type="submit" value="Generate Chart">
+  </form>
+
+<!--chart will show if available-->
+  {% if chart %}
+  <h2>Chart Output:</h2>
+  <img src="{{ chart }}" alt="Stock Chart">
+{% endif %}
+{% endblock %}
