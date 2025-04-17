@@ -1,6 +1,38 @@
+from flask import Flask, render_template, request, redirect, url_for, Blueprint, flash
 import requests
 import pygal
 from datetime import datetime
+
+#Flask Setup
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+
+#flask routes
+@app.route('/',methods=['GET', 'POST'])
+def hello_world():
+    '''
+    This route should display HTML with a title called Stock Data Visualizer, people should choose symbols, chart, time, start and end date
+    This route displays HTML with a form for users to input stock data parameters
+    and handles form submissions to generate and display charts
+    '''
+    chart_svg = None
+    
+    #get form data
+    symbol = request.form.get('symbol').strip().upper()
+    chart_type = int(request.form.get('chart_type'))
+    time_series = int(request.form.get('time_series'))
+    start_date = validate_date_input(request.form.get('start_date'))
+    end_date = validate_date_input(request.form.get('end_date'))
+    
+    #call API
+    
+    #call chart maker
+    
+    #return the render template
+    
+    
+    return 'Hello, World!'
+
 
 def main():
     
@@ -208,7 +240,7 @@ def get_api_data_with_range(symbol, functionNum, start_date, end_date):
     return filtered_data
 
 #To Do: Vinny
-def make_chart(data: dict, chart_type: int, symbol: int, time_series_type: int):
+def make_chart(data: dict, chart_type: int, symbol: int, time_series_type: int, web_mode=False):
     '''
     Creates and renders a chart based on the stock data.
     
@@ -278,7 +310,10 @@ def make_chart(data: dict, chart_type: int, symbol: int, time_series_type: int):
     chart.add('Close', closes)
     
     # Render the chart in the browser
-    chart.render_in_browser()
+    if web_mode:
+        return chart.render()
+    else:
+        chart.render_in_browser()
 
 #*************Utility methods*************#  
 #To Do: Ethan
@@ -313,4 +348,4 @@ def validate_date_input(str_input):
         return None
 
 if __name__ == '__main__':
-    main()
+    app.run(debug=True, port=5000)
