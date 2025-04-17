@@ -7,12 +7,12 @@
 <!--Asks user for stock symbol-->
   <form action="{{ url_for('hello_world') }}" method="POST">
     <label for="symbol">Choose Symbol:</label><br>
-    <select id="symbol" name="symbol" required>
-        <option value="">Select a symbol</option>
-        {% for symbol in symbol_list %}
-            <option value="{{ symbol }}">{{ symbol }}</option>
-        {% endfor %}
-    </select><br><br>
+  <select id="symbol" name="symbol" required>
+      <option value="">Select a symbol</option>
+      {% for symbol, name in symbol_list %}
+          <option value="{{ symbol }}">{{ symbol }} - {{ name }}</option>
+      {% endfor %}
+  </select>
 
 <!--Asks user for chart type-->
 <label for="chartType">Choose Chart Type:</label><br>
@@ -44,6 +44,6 @@
 <!--chart will show if available-->
   {% if chart %}
   <h2>Chart Output:</h2>
-  <div>"{{ chart|safe }}"</div>
+  <div>{{ chart|safe }}</div>
 {% endif %}
 {% endblock %}

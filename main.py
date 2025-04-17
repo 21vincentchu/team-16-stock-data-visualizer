@@ -1,11 +1,40 @@
-from flask import Flask, render_template, request, redirect, url_for, Blueprint, flash
+from flask import Flask, render_template, request, flash
 import requests
+import os
+import csv
 import pygal
 from datetime import datetime
 
 #Flask Setup
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+
+def load_symbols_from_csv():
+    '''
+    Load stock symbols from the CSV file
+    Used the website below to make this more portable so that people wouldn't have pathing issues
+    https://www.geeksforgeeks.org/os-path-module-python/
+    
+    Source for the CSV functions and CSV help
+    https://www.geeksforgeeks.org/working-csv-files-python/
+    '''
+
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Path to the CSV file in the same directory as the script
+    csv_path = os.path.join(current_dir, 'stocks.csv')
+        
+    symbols = []
+    with open(csv_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        next(csv_reader)  # Skip header row
+        for row in csv_reader:
+            if len(row) >= 2:
+                symbol = row[0].strip()
+                name = row[1].strip()
+                symbols.append((symbol, name))  # This creates a tuple with (symbol, name)
+    return symbols
 
 #flask routes
 @app.route('/',methods=['GET', 'POST'])
@@ -15,24 +44,47 @@ def hello_world():
     This route displays HTML with a form for users to input stock data parameters
     and handles form submissions to generate and display charts
     '''
-    chart_svg = None
+    chart = None
+    
+    #get the symbol list
+    symbol_list = load_symbols_from_csv()
     
     #get form data
-    symbol = request.form.get('symbol').strip().upper()
-    chart_type = int(request.form.get('chart_type'))
-    time_series = int(request.form.get('time_series'))
-    start_date = validate_date_input(request.form.get('start_date'))
-    end_date = validate_date_input(request.form.get('end_date'))
+    if request.method == 'POST':
+        # Get form data
+        symbol = request.form.get('symbol')
+        
+        #debugging log to see if symbol was right
+        #print(f"Symbol received from form: {symbol}")
+        
+        chart_type = validate_int_input(request.form.get('chartType'), (1, 2))
+        time_series = validate_int_input(request.form.get('timeSeries'), (1, 4))
+        start_date = validate_date_input(request.form.get('startDate'))
+        end_date = validate_date_input(request.form.get('endDate'))
+        
+        # Check for valid inputs
+        if not symbol:
+            flash('Please select a valid stock symbol', 'error')
+        elif not chart_type:
+            flash('Please select a valid chart type', 'error')
+        elif not time_series:
+            flash('Please select a valid time series', 'error')
+        elif not start_date or not end_date:
+            flash('Please enter valid dates in YYYY-MM-DD format', 'error')
+        elif start_date > end_date:
+            flash('Start date must be before end date', 'error')
+        else:
+            # All inputs are valid call API
+            api_data = get_api_data_with_range(symbol, time_series, start_date, end_date)
+            
+            if api_data:
+                #call chart maker
+                chart = make_chart(api_data, chart_type, symbol, time_series, web_mode=True)
+            else:
+                flash('No data available for the selected parameters', 'error')
     
-    #call API
-    
-    #call chart maker
-    
-    #return the render template
-    
-    
-    return 'Hello, World!'
-
+    # Render template with the chart (if generated) and symbol list
+    return render_template('index.html', chart=chart, symbol_list=symbol_list)
 
 def main():
     
@@ -91,7 +143,6 @@ def get_symbol():
                 print (f'Error: {symbol} not recognized. Try again.')
         except Exception as e:
             print(f"Could not validate symbol. {str(e)}")
-
 
 #To do: Vinny
 def get_chart_type():
@@ -199,9 +250,29 @@ def get_api_data_with_range(symbol, functionNum, start_date, end_date):
     else:
         url = f'https://www.alphavantage.co/query?function={api_function}&symbol={symbol}&outputsize=full&apikey={api_key}'
     
+    # Print the URL for debugging
+    print(f"API URL: {url}")
+    
     # Make the request
     response = requests.get(url)
+    
+    # Print the status code and part of the response for debugging
+    print(f"Status Code: {response.status_code}")
+    print(f"Response Preview: {response.text[:200]}...")
+    
     data = response.json()
+    
+    # Check if 'Error Message' exists in the response
+    if 'Error Message' in data:
+        print(f"API Error: {data['Error Message']}")
+        flash(f"API Error: {data['Error Message']}", 'error')
+        return {}
+    
+    # Check if 'Note' exists (often indicates quota issues)
+    if 'Note' in data:
+        print(f"API Note: {data['Note']}")
+        flash(f"API Note: {data['Note']}", 'error')
+        # Continue processing as some API responses include a note but still contain data
     
     # Determine the correct response key
     response_key = ""
@@ -236,6 +307,9 @@ def get_api_data_with_range(symbol, functionNum, start_date, end_date):
                 
         except ValueError as e:
             print(f"Error parsing date: {e}")
+    
+    # Print the number of data points found
+    print(f"Found {len(filtered_data)} data points within date range")
     
     return filtered_data
 
