@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="menu">
-        <a href="#">Home</a>
+        <a href="{{ url_for('hello_world') }}">Home</a>
     </div>
     <div class="div-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
