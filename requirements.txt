@@ -1,10 +1,10 @@
 certifi==2025.1.31
 charset-normalizer==3.4.1
 idna==3.10
-importlib_metadata==8.6.1
+importlib_metadata==8.5.0 # changed from 8.6.1, earliest veresion available
 lxml==5.3.1
 pygal==3.0.5
 requests==2.32.3
-urllib3==2.3.0
-zipp==3.21.0
-flask==3.1.0
+urllib3==2.2.3 # changed from 2.3.0, earliest veresion available
+zipp==3.20.2 # changed from 3.21.0, earliest veresion available
+flask==3.0.3 # changed from 3.1.0, earliest veresion available

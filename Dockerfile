@@ -13,5 +13,8 @@ RUN pip install --upgrade pip
 # install any needed packages
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose port 5000
+EXPOSE 5001
+
 # set the default commands to run when starting the container
 CMD ["python", "main.py"]
