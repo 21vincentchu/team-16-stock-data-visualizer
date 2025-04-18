@@ -60,3 +60,12 @@ git merge your-branch-name -m "message here" #merge your branch into main
 git push origin main #push the merged changes to GitHub
 
 ```
+
+## Using Project with Docker
+
+In a terminal sourced in the local project directory, paste and run the following commands:
+```
+docker-compose up --build
+```
+Now, it will be exposed outside the docker container on localhost:5001
+

@@ -7,10 +7,7 @@ services:
     image: stockdata_webapp_team16_image
     container_name: stockdata_webapp_team16
     ports:
-    - target: 5000
-      published: 5000
-      protocol: tcp
-      mode: host
+      - "5001:5000"
     volumes:
       - .:/stockapp
     environment:
