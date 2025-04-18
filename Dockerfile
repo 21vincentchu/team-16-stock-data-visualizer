@@ -1,5 +1,5 @@
 # use an official python image as the base image
-FROM python:3.8-slim-buster
+FROM python:3.11-slim-buster
 
 # set working directory
 WORKDIR /stockapp
@@ -12,6 +12,9 @@ RUN pip install --upgrade pip
 
 # install any needed packages
 RUN pip install --no-cache-dir -r requirements.txt
+
+# EXPOSE port 5000
+EXPOSE 5000
 
 # set the default commands to run when starting the container
 CMD ["python", "main.py"]
