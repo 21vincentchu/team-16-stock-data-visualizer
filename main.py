@@ -87,7 +87,6 @@ def hello_world():
     return render_template('index.html', chart=chart, symbol_list=symbol_list)
 
 def main():
-    
     #ask the user to enter the stock symbol for the company they want data for
     symbol=get_symbol()
     
@@ -422,4 +421,7 @@ def validate_date_input(str_input):
         return None
 
 if __name__ == '__main__':
+    #Use main() to run in the command line
+    #main() 
+
     app.run(debug=True, port=5000)
