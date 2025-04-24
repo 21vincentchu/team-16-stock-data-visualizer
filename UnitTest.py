@@ -114,5 +114,32 @@ class TestGetChartType(unittest.TestCase):
             # compare result to expected correct result
             self.assertIsNone(result)
 
+class TestGetSymbol(unittest.TestCase):
+
+    #valid stock symbol
+    def test_valid_symbol(self):
+        user_input=['AAPL']
+
+        with patch('builtins.input', side_effect=user_input):
+            symbol=get_symbol()
+            self.assertEqual(symbol,'AAPl')
+    
+    #tests when user enters empty string then a symbol
+    def test_empty_symbol(self):
+        user_inputs=['','AAPl']
+
+        with patch('builtins.input', side_effect=user_inputs):
+            symbol=get_symbol()
+            self.assertEqual(symbol,'AAPl')
+    
+    #lowercase converted to uppercase
+    def test_lowercase_symbol(self):
+        user_inputs=['aapl']
+
+        with patch('builtins.input', side_effect=user_inputs):
+            symbol=get_symbol()
+            self.assertEqual(symbol,'AAPl')
+
+
 if __name__ == '__main__':
     unittest.main()
