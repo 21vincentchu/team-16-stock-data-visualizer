@@ -39,7 +39,80 @@ class TestGetDateRange(unittest.TestCase):
         # Test empty string input
         date_str = ''
         self.assertIsNone(validate_date_input(date_str))
-            
+
+class TestGetTimeSeries(unittest.TestCase):
+    def test_valid_input(self):
+        # define user inputs
+        user_input = '2'
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_time_series_function()
+            # compare result to expected correct result
+            self.assertEqual(2, result)
+        
+    def test_out_of_range_input(self):
+        # define user inputs
+        user_input = '8' # this number is beyond the max range of the input, which is 4
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_time_series_function()
+            # compare result to expected correct result
+            self.assertIsNone(result)
+    
+    def test_invalid_input(self):
+        # define user inputs
+        user_input = 'a'
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_time_series_function()
+            # compare result to expected correct result
+            self.assertIsNone(result)
+
+    def test_empty_input(self):
+        # define user inputs
+        user_input = '' 
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_time_series_function()
+            # compare result to expected correct result
+            self.assertIsNone(result)
+
+class TestGetChartType(unittest.TestCase):
+    def test_valid_input(self):
+        # define user inputs
+        user_input = '2'
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_chart_type()
+            # compare result to expected correct result
+            self.assertEqual(2, result)
+        
+    def test_out_of_range_input(self):
+        # define user inputs
+        user_input = '3' # this number is beyond the max range of the input, which is 2
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_chart_type()
+            # compare result to expected correct result
+            self.assertIsNone(result)
+    
+    def test_invalid_input(self):
+        # define user inputs
+        user_input = 'a'
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_chart_type()
+            # compare result to expected correct result
+            self.assertIsNone(result)
+
+    def test_empty_input(self):
+        # define user inputs
+        user_input = '' 
+        # use patch to execute function
+        with patch('builtins.input', side_effect=user_input):
+            result = get_chart_type()
+            # compare result to expected correct result
+            self.assertIsNone(result)
 
 if __name__ == '__main__':
     unittest.main()

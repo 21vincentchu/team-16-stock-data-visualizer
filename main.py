@@ -140,8 +140,11 @@ def get_symbol():
                 return symbol
             else:
                 print (f'Error: {symbol} not recognized. Try again.')
+                return None
         except Exception as e:
             print(f"Could not validate symbol. {str(e)}")
+            return None
+
 
 #To do: Vinny
 def get_chart_type():
@@ -161,6 +164,8 @@ def get_chart_type():
             return validated_choice
         else:
             print("Invalid entry")
+            return None
+
 
 #to do: Claire
 def get_time_series_function():
@@ -186,6 +191,7 @@ def get_time_series_function():
             return validated_choice
         else:
             print("Invalid entry")
+            return None
 
 #to do: Ethan        
 def get_date_range():
@@ -214,7 +220,8 @@ def get_date_range():
             return (start_date, end_date)
         else:
             print("\nError: Please enter valid date.\n\n")
-            continue
+            return None
+
 
 #To Do: Vinny
 def get_api_data_with_range(symbol, functionNum, start_date, end_date):
