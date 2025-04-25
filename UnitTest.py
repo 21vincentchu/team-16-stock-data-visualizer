@@ -3,6 +3,9 @@ from unittest.mock import patch
 from datetime import datetime
 from main import validate_date_input, validate_int_input
 from main import get_symbol, get_chart_type, get_time_series_function, get_date_range
+'''
+What is patch? https://realpython.com/python-mock-library/
+'''
 
 class TestGetDateRange(unittest.TestCase):
     def test_valid_input(self):
