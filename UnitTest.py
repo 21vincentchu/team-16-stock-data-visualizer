@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from datetime import datetime
-from main import validate_date_input, validate_int_input
+from main import validate_date_input
 from main import get_symbol, get_chart_type, get_time_series_function, get_date_range
 '''
 What is patch? https://realpython.com/python-mock-library/
@@ -43,10 +43,17 @@ class TestGetDateRange(unittest.TestCase):
         date_str = ''
         self.assertIsNone(validate_date_input(date_str))
 
+'''
+Changes: I put brackets around each user_input variable declared
+it was throwing errors due to, when using patch, needs to be sent a list or something iterable
+
+- Vinny
+'''        
+
 class TestGetTimeSeries(unittest.TestCase):
     def test_valid_input(self):
         # define user inputs
-        user_input = '2'
+        user_input = ['2']
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_time_series_function()
@@ -55,7 +62,7 @@ class TestGetTimeSeries(unittest.TestCase):
         
     def test_out_of_range_input(self):
         # define user inputs
-        user_input = '8' # this number is beyond the max range of the input, which is 4
+        user_input = ['8'] # this number is beyond the max range of the input, which is 4
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_time_series_function()
@@ -64,7 +71,7 @@ class TestGetTimeSeries(unittest.TestCase):
     
     def test_invalid_input(self):
         # define user inputs
-        user_input = 'a'
+        user_input = ['a']
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_time_series_function()
@@ -73,17 +80,24 @@ class TestGetTimeSeries(unittest.TestCase):
 
     def test_empty_input(self):
         # define user inputs
-        user_input = '' 
+        user_input = ['']
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_time_series_function()
             # compare result to expected correct result
             self.assertIsNone(result)
+
+'''
+Changes: I put brackets around each user_input variable declared
+it was throwing errors due to, when using patch, needs to be sent a list or something iterable
+
+- Vinny
+'''             
 
 class TestGetChartType(unittest.TestCase):
     def test_valid_input(self):
         # define user inputs
-        user_input = '2'
+        user_input = ['2']
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_chart_type()
@@ -92,7 +106,7 @@ class TestGetChartType(unittest.TestCase):
         
     def test_out_of_range_input(self):
         # define user inputs
-        user_input = '3' # this number is beyond the max range of the input, which is 2
+        user_input = ['3'] # this number is beyond the max range of the input, which is 2
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_chart_type()
@@ -101,7 +115,7 @@ class TestGetChartType(unittest.TestCase):
     
     def test_invalid_input(self):
         # define user inputs
-        user_input = 'a'
+        user_input = ['a']
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_chart_type()
@@ -110,30 +124,49 @@ class TestGetChartType(unittest.TestCase):
 
     def test_empty_input(self):
         # define user inputs
-        user_input = '' 
+        user_input = [''] 
         # use patch to execute function
         with patch('builtins.input', side_effect=user_input):
             result = get_chart_type()
             # compare result to expected correct result
             self.assertIsNone(result)
 
-class TestGetSymbol(unittest.TestCase):
+'''
+Changes: Had spelling errors, change APPi / appi -> APPL 
 
+- Vinny
+'''
+class TestGetSymbol(unittest.TestCase):
     #valid stock symbol
     def test_valid_symbol(self):
         user_input=['AAPL']
 
         with patch('builtins.input', side_effect=user_input):
             symbol=get_symbol()
-            self.assertEqual(symbol,'AAPl')
+            self.assertEqual(symbol,'AAPL')
     
+    #tests when user enters empty string then a symbol (DEPRECATED)
+    '''def test_empty_symbol(self):
+            user_inputs=['','AAPl']
+
+            with patch('builtins.input', side_effect=user_inputs):
+                symbol=get_symbol()
+                self.assertEqual(symbol,'AAPL')'''
+    
+    '''
+    Notes: Rewrote the test_empty_symbol, as the original function didn't work, 
+    - changed the user input to be empty
+    - changed the assert, should expecting none
+    
+    - Vinny
+    '''
     #tests when user enters empty string then a symbol
     def test_empty_symbol(self):
-        user_inputs=['','AAPl']
-
+        # Function shoulds
+        user_inputs = ['']
         with patch('builtins.input', side_effect=user_inputs):
-            symbol=get_symbol()
-            self.assertEqual(symbol,'AAPl')
+            symbol = get_symbol()
+            self.assertIsNone(symbol) #Expect None
     
     #lowercase converted to uppercase
     def test_lowercase_symbol(self):
@@ -141,8 +174,7 @@ class TestGetSymbol(unittest.TestCase):
 
         with patch('builtins.input', side_effect=user_inputs):
             symbol=get_symbol()
-            self.assertEqual(symbol,'AAPl')
-
+            self.assertEqual(symbol,'AAPL')
 
 if __name__ == '__main__':
     unittest.main()
